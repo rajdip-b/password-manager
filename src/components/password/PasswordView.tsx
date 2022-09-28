@@ -7,11 +7,13 @@ import { useSelector } from "react-redux";
 import { StoreStateType } from "../../store/store";
 import EditPasswordOverlay from "./EditPasswordOverlay";
 import DeletePasswordOverlay from "./DeletePasswordOverlay";
+import ViewPasswordOverlay from "./ViewPasswordOverlay";
 
 const PasswordView: FC = () => {
     const [addPasswordOverlayOpen, setAddPasswordOverlayOpen] = React.useState(false);
     const [editPassword, setEditPassword] = React.useState<Password | null>(null);
     const [deletePassword, setDeletePassword] = React.useState<Password | null>(null);
+    const [viewPassword, setViewPassword] = React.useState<Password | null>(null);
     const passwords = useSelector((state: StoreStateType) => state.app.passwords);
 
     const toggleAddPasswordOverlay = useCallback(() => setAddPasswordOverlayOpen((prev) => !prev), []);
@@ -29,6 +31,11 @@ const PasswordView: FC = () => {
                 open={deletePassword != null}
                 password={deletePassword}
             />
+            <ViewPasswordOverlay
+                onClose={() => setViewPassword(null)}
+                open={viewPassword != null}
+                password={viewPassword}
+            />
             <div className={"font-extrabold text-2xl text-blackSecondary dark:text-whiteSecondary mb-5"}>
                 Your passwords
             </div>
@@ -36,7 +43,13 @@ const PasswordView: FC = () => {
                 {passwords
                     .map((p) => Password.fromJSON(p))
                     .map((p) => (
-                        <PasswordItem key={p.id} password={p} onEdit={setEditPassword} onDelete={setDeletePassword} />
+                        <PasswordItem
+                            key={p.id}
+                            password={p}
+                            onEdit={setEditPassword}
+                            onDelete={setDeletePassword}
+                            onView={setViewPassword}
+                        />
                     ))}
                 {passwords.length === 0 && (
                     <div

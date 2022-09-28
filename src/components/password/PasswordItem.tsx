@@ -25,7 +25,8 @@ const PasswordItem: FC<{
     password: Password;
     onEdit: (password: Password) => void;
     onDelete: (password: Password) => void;
-}> = ({ password, onEdit, onDelete }) => {
+    onView: (password: Password) => void;
+}> = ({ password, onEdit, onDelete, onView }) => {
     return (
         <div
             className={`border-l-4 ${getBorderColor(
@@ -39,18 +40,19 @@ const PasswordItem: FC<{
                     alt={""}
                 />
             </div>
-            <div
+            <button
+                onClick={() => onView(password)}
                 className={
-                    "flex-grow flex flex-col gap-3 justify-between text-lightThemeBlack dark:text-darkThemeWhite"
+                    "flex-grow flex flex-col gap-3 justify-between text-lightThemeBlack dark:text-darkThemeWhite text-left"
                 }
             >
                 <div className={"text-blue"}>{password.getServiceName()}</div>
-                <div className={"flex flex-col md:flex-row gap-2 items-center"}>
+                <div className={"flex flex-col md:flex-row gap-2 items-start md:items-center"}>
                     <div>{password.login}</div>
                     <div className={"min-w-[5px] min-h-[5px] bg-lightThemeBlack hidden md:block"} />
                     <div>Updated on {password.getDate()}</div>
                 </div>
-            </div>
+            </button>
             <div
                 className={
                     "min-w-[60px] flex flex-col justify-between gap-3 text-lightThemeBlack dark:text-darkThemeWhite"
